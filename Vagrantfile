@@ -71,15 +71,21 @@ Vagrant.configure("2") do |config|
   # end
   config.vm.define :owner do |node|
     node.vm.box = "ubuntu-14.04"
-    #node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
+    node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
     node.vm.hostname = 'owner'
     node.vm.network :forwarded_port, guest: 22, host: 2001, id: "ssh"
     node.vm.network :private_network, ip: "192.168.33.11"
+
+    node.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/playbook.yml"
+      ansible.inventory_path = "provisioning/hosts"
+      ansible.limit = 'all'
+    end
   end
 
   config.vm.define :worker do |node|
     node.vm.box = "ubuntu-14.04"
-    #node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
+    node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
     node.vm.hostname = 'worker'
     node.vm.network :forwarded_port, guest: 22, host: 2002, id: "ssh"
     node.vm.network :private_network, ip: "192.168.33.12"
