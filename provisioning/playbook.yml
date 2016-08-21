@@ -3,5 +3,83 @@
   sudo: true
   user: vagrant
   tasks:
+    - name: update packages
+      apt: update_cache=yes
+
     - name: install packages zsh
       apt: name=zsh update_cache=yes
+
+    - name: install packages tmux
+      apt: name=tmux update_cache=yes
+
+    - name: installl the software-properties-common Package
+      apt: name={{ item }} state=present update_cache=yes
+      with_items:
+        - software-properties-common
+        - python-software-properties
+        - language-pack-ja-base
+        - jq
+
+    - name: install packages neovim
+      apt_repository: repo='ppa:neovim-ppa/unstable'
+
+    - name: installl neovim options
+      apt: name={{ item }} state=present update_cache=yes
+      with_items:
+        - neovim
+        - python-dev
+        - python-pip
+        - python3-dev
+        - python3-pip
+
+    - name: installl copy and paste tools
+      apt: name={{ item }} state=present update_cache=yes
+      with_items:
+        - xsel
+
+- hosts: nodes
+  user: vagrant
+  tasks:
+  - name: private key for owner
+    copy: dest=~/.ssh/id_rsa mode=600
+          content="{{ lookup('file', '~/.ssh/id_rsa') }}"
+
+- hosts: nodes
+  sudo: False
+  name: clone github dotfiles
+  tags: github
+  vars:
+    branch: develop
+  tasks:
+    - git: repo=git@github.com:a9b/dotfiles2.git
+       dest=/home/vagrant/dotfiles2
+       accept_hostkey=True
+       version={{ branch }}
+
+- hosts: nodes
+  tasks:
+    - name: make dotfile dir
+      file: dest=/home/vagrant/{{ item.dest }} state=directory mode=0755
+      with_items:
+      - { dest: '.config/nvim' }
+    - name: make localfile
+      file: path=/home/vagrant/dotfiles2/vim/rc/local.rc.vim state=touch mode=0755
+    - name: link dotfile dir
+      file: src=/home/vagrant/dotfiles2/{{ item.src }} dest=/home/vagrant/{{ item.dest }} state=link
+      with_items:
+      - { src: 'git/gitconfig', dest: '.gitconfig' }
+      - { src: 'git/gitignore', dest: '.gitignore' }
+      - { src: 'zsh/.zshrc', dest: '.zshrc' }
+      - { src: 'zsh/.zshenv', dest: '.zshenv' }
+      - { src: 'vim/', dest: '.config/nvim/vim' }
+      - { src: 'vim/vimrc', dest: '.config/nvim/init.vim' }
+      - { src: 'tmux/tmux.conf', dest: '.tmux.conf' }
+
+- hosts: nodes
+  sudo: true
+  user: vagrant
+  tasks:
+    - name: add user a9b
+      user: name=a9b comment="a9b.word" password=pass
+    - name: change use shell for vagrant
+      user: name=vagrant shell=/bin/zsh
