@@ -38,6 +38,19 @@
         - xsel
 
 - hosts: nodes
+  sudo: yes
+  gather_facts: no
+  vars:
+    zoneinfo_path: /usr/share/zoneinfo/Asia/Tokyo
+  tasks:
+    - name: set localtime
+      file: >
+        src={{zoneinfo_path}}
+        dest=/etc/localtime
+        state=link
+        force=yes
+
+- hosts: nodes
   user: vagrant
   tasks:
   - name: private key for owner
