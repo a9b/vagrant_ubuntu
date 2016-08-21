@@ -87,6 +87,10 @@
       - { src: 'vim/', dest: '.config/nvim/vim' }
       - { src: 'vim/vimrc', dest: '.config/nvim/init.vim' }
       - { src: 'tmux/tmux.conf', dest: '.tmux.conf' }
+    - name: link bin dir
+      file: src=/home/vagrant/dotfiles2/{{ item.src }} dest=/home/vagrant/{{ item.dest }} state=link
+      with_items:
+      - { src: 'bin', dest: 'bin' }
 
 - hosts: nodes
   sudo: true
