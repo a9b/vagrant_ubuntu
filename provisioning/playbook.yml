@@ -91,6 +91,7 @@
       file: src=/home/vagrant/dotfiles2/{{ item.src }} dest=/home/vagrant/{{ item.dest }} state=link
       with_items:
       - { src: 'bin', dest: 'bin' }
+      - { src: 'bin/src/rpbcopy', dest: '/bin/pbcopy' }
 
 - hosts: nodes
   sudo: true
