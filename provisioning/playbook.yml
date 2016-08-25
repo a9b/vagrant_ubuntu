@@ -19,6 +19,7 @@
         - python-software-properties
         - language-pack-ja-base
         - jq
+        - golang
 
     - name: install packages neovim
       apt_repository: repo='ppa:neovim-ppa/unstable'
@@ -50,12 +51,12 @@
         state=link
         force=yes
 
-- hosts: nodes
-  user: vagrant
-  tasks:
-  - name: private key for owner
-    copy: dest=~/.ssh/id_rsa mode=600
-          content="{{ lookup('file', '~/.ssh/id_rsa') }}"
+#- hosts: nodes
+#  user: vagrant
+#  tasks:
+#  - name: private key for owner
+#    copy: dest=/vagrant/.vagrant/machines/owner/virtualbox/private_key mode=600
+#          content="{{ lookup('file', '~/.ssh/id_rsa') }}"
 
 - hosts: nodes
   become: False

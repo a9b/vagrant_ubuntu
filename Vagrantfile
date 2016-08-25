@@ -78,8 +78,8 @@ Vagrant.configure("2") do |config|
     node.vm.network :forwarded_port, guest: 22, host: 2001, id: "ssh"
     node.vm.network :private_network, ip: "192.168.33.11"
 
-    # ゲストにインストールして実行
-    config.vm.provision "ansible_local" do |ansible|
+    # ゲスト(owner)にインストールして実行
+    node.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "provisioning/playbook.yml"
       ansible.verbose = true
       ansible.inventory_path = "provisioning/hosts"
