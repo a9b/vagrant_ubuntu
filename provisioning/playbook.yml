@@ -1,6 +1,6 @@
 ---
 - hosts: nodes
-  sudo: true
+  become: true
   user: vagrant
   tasks:
     - name: update packages
@@ -38,7 +38,7 @@
         - xsel
 
 - hosts: nodes
-  sudo: yes
+  become: yes
   gather_facts: no
   vars:
     zoneinfo_path: /usr/share/zoneinfo/Asia/Tokyo
@@ -58,7 +58,7 @@
           content="{{ lookup('file', '~/.ssh/id_rsa') }}"
 
 - hosts: nodes
-  sudo: False
+  become: False
   name: clone github dotfiles
   tags: github
   vars:
@@ -94,7 +94,7 @@
       - { src: 'bin/src/rpbcopy', dest: '/bin/pbcopy' }
 
 - hosts: nodes
-  sudo: true
+  become: true
   user: vagrant
   tasks:
     - name: add user a9b
