@@ -19,7 +19,9 @@
         - python-software-properties
         - language-pack-ja-base
         - jq
+        - w3m
         - golang
+        - docker
 
     - name: install packages neovim
       apt_repository: repo='ppa:neovim-ppa/unstable'
