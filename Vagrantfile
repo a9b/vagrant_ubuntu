@@ -21,7 +21,11 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu-14.04"
+
+  #config.vm.box = "ubuntu-14.04"
+  #config.vm.box = "xenial-server-cloudimg-amd64-vagrant"
+  config.vm.box = "xenial64"
+
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -72,8 +76,10 @@ Vagrant.configure("2") do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
   config.vm.define :owner do |node|
-    node.vm.box = "ubuntu-14.04"
-    node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
+    #node.vm.box = "ubuntu-14.04"
+    #node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
+    node.vm.box = "xenial64"
+    node.vm.box_url = 'https://atlas.hashicorp.com/ubuntu/boxes/xenial64/versions/20160521.0.0/providers/virtualbox.box'
     node.vm.hostname = 'owner'
     node.vm.network :forwarded_port, guest: 22, host: 2001, id: "ssh"
     node.vm.network :private_network, ip: "192.168.33.11"
@@ -95,8 +101,10 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :worker do |node|
-    node.vm.box = "ubuntu-14.04"
-    node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
+    #node.vm.box = "ubuntu-14.04"
+    #node.vm.box_url = 'https://github.com/jose-lpa/packer-ubuntu_14.04/releases/download/v2.0/ubuntu-14.04.box'
+    node.vm.box = "xenial64"
+    node.vm.box_url = 'https://atlas.hashicorp.com/ubuntu/boxes/xenial64/versions/20160521.0.0/providers/virtualbox.box'
     node.vm.hostname = 'worker'
     node.vm.network :forwarded_port, guest: 22, host: 2002, id: "ssh"
     node.vm.network :private_network, ip: "192.168.33.12"
