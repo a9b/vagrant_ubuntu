@@ -68,20 +68,20 @@
     branch: develop
   tasks:
     - git: repo=git@github.com:a9b/dotfiles2.git
-       dest=/home/vagrant/dotfiles2
-       accept_hostkey=True
+       dest=/home/ubuntu/dotfiles2
+       accept_hostkey=yes
        version={{ branch }}
 
 - hosts: nodes
   tasks:
     - name: make dotfile dir
-      file: dest=/home/vagrant/{{ item.dest }} state=directory mode=0755
+      file: dest=/home/ubuntu/{{ item.dest }} state=directory mode=0755
       with_items:
       - { dest: '.config/nvim' }
     - name: make localfile
-      file: path=/home/vagrant/dotfiles2/vim/rc/local.rc.vim state=touch mode=0755
+      file: path=/home/ubuntu/dotfiles2/vim/rc/local.rc.vim state=touch mode=0755
     - name: link dotfile dir
-      file: src=/home/vagrant/dotfiles2/{{ item.src }} dest=/home/vagrant/{{ item.dest }} state=link
+      file: src=/home/ubuntu/dotfiles2/{{ item.src }} dest=/home/ubuntu/{{ item.dest }} state=link
       with_items:
       - { src: 'git/gitconfig', dest: '.gitconfig' }
       - { src: 'git/gitignore', dest: '.gitignore' }
@@ -91,7 +91,7 @@
       - { src: 'vim/vimrc', dest: '.config/nvim/init.vim' }
       - { src: 'tmux/tmux.conf', dest: '.tmux.conf' }
     - name: link bin dir
-      file: src=/home/vagrant/dotfiles2/{{ item.src }} dest=/home/vagrant/{{ item.dest }} state=link
+      file: src=/home/ubuntu/dotfiles2/{{ item.src }} dest=/home/ubuntu/{{ item.dest }} state=link
       with_items:
       - { src: 'bin', dest: 'bin' }
       - { src: 'bin/src/rpbcopy', dest: '/bin/pbcopy' }
