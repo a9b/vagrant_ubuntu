@@ -83,6 +83,10 @@ Vagrant.configure("2") do |config|
     node.vm.hostname = 'owner'
     node.vm.network :forwarded_port, guest: 22, host: 2001, id: "ssh"
     node.vm.network :private_network, ip: "192.168.33.11"
+    node.vm.synced_folder "/hseki/", "/hseki/", create: true,
+    :owner => "ubuntu",
+    :group => "ubuntu",
+    :mount_options => ["dmode=777,fmode=777"]
 
     # ゲスト(owner)にインストールして実行
     node.vm.provision "ansible_local" do |ansible|
